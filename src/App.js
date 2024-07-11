@@ -5,7 +5,6 @@ import MainRoutes from "./pages/MainRoutes";
 import { Route, Routes, Navigate } from "react-router-dom";
 function App() {
   const isAuth = useSelector((state) => state.Auth.isAuth);
-  console.log(isAuth)
   return (
     <div className="App">
       <Routes>
@@ -13,7 +12,7 @@ function App() {
         {isAuth ? (
           <Route path="*" element={<Navigate replace to="/otp" />} />
         ) : (
-          <Route path="/*" element={<MainRoutes />} />
+          <Route path="*" element={<MainRoutes />} />
         )}
       </Routes>
     </div>

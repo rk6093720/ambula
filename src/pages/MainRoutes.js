@@ -39,7 +39,7 @@ const MainRoutes = () => {
         ))}
       </Stepper>
       <Routes>
-        <Route path="/" element={<Login setCurrentStep={handleStepChange} />} />
+        <Route path="/*" element={<Login setCurrentStep={handleStepChange} />} />
         <Route
           path="/profile"
           element={<Profile setCurrentStep={handleStepChange} />}
