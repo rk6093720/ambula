@@ -11,9 +11,9 @@ function App() {
       <Routes>
         <Route path="/otp" element={<Otp />} />
         {isAuth ? (
-          <Route path="*" element={<Navigate to="/otp" />} />
+          <Route path="*" element={<Navigate replace to="/otp" />} />
         ) : (
-          <Route path="/" element={<MainRoutes />} />
+          <Route path="/*" element={<MainRoutes />} />
         )}
       </Routes>
     </div>
