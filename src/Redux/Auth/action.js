@@ -104,7 +104,7 @@ const addProfile =(payload)=>async(dispatch)=>{
 
 const getUserSuggest=(payload)=>async(dispatch)=>{
   const {phone}=payload;
-  const number = phone.length ;
+  const number = phone?.length ;
   const newsuggest = generateRandomSuggestions(number);
   return await dispatch({type:types.USERSUGGEST,payload:{newsuggest}})
 }

@@ -23,8 +23,9 @@ const MainRoutes = () => {
         activeStep={currentStep}
         alternativeLabel
         sx={{
-          width:{ base:"100%",md:"70%",lg:"30%"},
-          margin: "auto",
+          width: { xs: "100%", md: "70%", lg:"30%"  },
+          margin: {xs:"auto",md:"auto",lg:"auto"},
+          left: { xs: "0%", md: "0%", lg: "0.7%" },
           marginTop: "10px",
           padding: "5px",
           postion: "relative",
@@ -39,7 +40,10 @@ const MainRoutes = () => {
         ))}
       </Stepper>
       <Routes>
-        <Route path="/*" element={<Login setCurrentStep={handleStepChange} />} />
+        <Route
+          path="/*"
+          element={<Login setCurrentStep={handleStepChange} />}
+        />
         <Route
           path="/profile"
           element={<Profile setCurrentStep={handleStepChange} />}
@@ -49,7 +53,7 @@ const MainRoutes = () => {
           element={<Abha setCurrentStep={handleStepChange} />}
         />
         <Route path="/userSuggestions" element={<Usersuggestions />} />
-        <Route path="/createpassword" element={<Createpassword/>}/>
+        <Route path="/createpassword" element={<Createpassword />} />
       </Routes>
     </React.Fragment>
   );

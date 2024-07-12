@@ -196,6 +196,9 @@ const Login = ({ setCurrentStep }) => {
               <Input
                 type="text"
                 value={aadhar}
+                inputProps={{
+                  maxLength: 12,
+                }}
                 sx={{
                   width: "70%",
                   margin: "auto",
@@ -259,6 +262,9 @@ const Login = ({ setCurrentStep }) => {
               <Input
                 type="text"
                 value={phone}
+                inputProps={{
+                  maxLength: 10,
+                }}
                 sx={{
                   width: "80%",
                   margin: "auto",

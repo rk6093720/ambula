@@ -1,16 +1,16 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import { Button, ImageList, ImageListItem } from "@mui/material";
-import { PropTypes } from 'prop-types';
+import { PropTypes } from "prop-types";
 import { Input as BaseInput } from "@mui/base/Input";
 import { styled } from "@mui/system";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import { getOtp } from "../Redux/Auth/action";
 import { OTP_FAILURE, OTP_SUCCESS } from "../Redux/Auth/actionTypes";
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+
 function OTP({ separator, length, value, onChange }) {
   const inputRefs = React.useRef(new Array(length).fill(null));
   const focusInput = (targetIndex) => {
@@ -107,7 +107,6 @@ function OTP({ separator, length, value, onChange }) {
     event.preventDefault();
     const clipboardData = event.clipboardData;
 
-    // Check if there is text data in the clipboard
     if (clipboardData.types.includes("text/plain")) {
       let pastedText = clipboardData.getData("text/plain");
       pastedText = pastedText.substring(0, length).trim();
@@ -163,138 +162,94 @@ function OTP({ separator, length, value, onChange }) {
     </Box>
   );
 }
+
 const Otp = () => {
-    const [otp,setOtp]=React.useState("");
-    const [timeleft,setTimeleft]=React.useState(null);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-     const [openToast, setOpenToast] = React.useState(false);
-     const [toastMessage, setToastMessage] = React.useState("");
-     const [toastSeverity, setToastSeverity] = React.useState("success");
-     const handleToastClose = (event, reason) => {
-       if (reason === "clickaway") {
-         return;
-       }
-       setOpenToast(false);
-     };
-    const phone = useSelector((state) => state?.Auth?.phonenumber) || JSON.parse(localStorage.getItem("phone"));
-    const handleOtp =()=>{
-        if(otp === "")
-        {
-           setToastSeverity("error");
-           setToastMessage("please write otp");
-           setOpenToast(true);
-            return
-        }
-       dispatch(getOtp({ otp })).then((r) => {
-  switch (r.type) {
-    case OTP_SUCCESS:
-      setToastSeverity("success");
-      setToastMessage(r.payload.success);
-      setOpenToast(true);
-      navigate("/profile");
-      break;
-    case OTP_FAILURE:
+  const [otp, setOtp] = React.useState("");
+  const [timeleft, setTimeleft] = React.useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [openToast, setOpenToast] = React.useState(false);
+  const [toastMessage, setToastMessage] = React.useState("");
+  const [toastSeverity, setToastSeverity] = React.useState("success");
+  const handleToastClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenToast(false);
+  };
+  const phone =
+    useSelector((state) => state?.Auth?.phonenumber) ||
+    JSON.parse(localStorage.getItem("phone"));
+
+  const handleOtp = () => {
+    if (otp === "") {
       setToastSeverity("error");
-      setToastMessage(r.payload.error);
+      setToastMessage("Please enter OTP");
       setOpenToast(true);
-      break;
-
-    default:
-      setToastMessage("Unexpected error occurred");
-      setOpenToast(true);
-  }
-});
+      return;
     }
-    const handleResendotp=()=>{
-        setTimeleft(60);
-    }
-     const formatTime = (timeLeft) => {
-       if (timeLeft <= 0) {
-         return "00:00";
-       }
-    //    const hours = Math.floor(timeLeft / 3600);
-    //    const remainingSeconds = timeLeft % 3600;
-       const minutes = Math.floor(timeLeft / 60);
-       const seconds = timeLeft % 60;
-// ${hours < 10 ? "0" : ""}${hours}:
-       return `${
-         minutes < 10 ? "0" : ""
-       }${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-     };
-    //  function timeCounter(){
-    //       const expiryDate = timeleft;
-    //       const interval = setInterval(() => {
-    //         const timeNow = Math.floor(Date.now() / 1000);
-    //         const difference = expiryDate - timeNow;
-    //         console.log(difference)
-    //         if (difference <= 0) {
-    //           clearInterval(interval);
-    //           setTimeleft(0);
-    //           return;
-    //         }
-    //         setTimeleft(difference);
-    //       }, 1000);
-    //       return () => clearInterval(interval);
-    //  }
-    //  React.useEffect(()=>{
-    //   timeCounter()
-    //  },[])
-    // const splitnumber = getnumber(phone);
-     React.useEffect(() => {
-       const interval = setInterval(() => {
-         setTimeleft((prev) => (prev > 0 ? prev - 1 : 0));
-       }, 1000);
+    dispatch(getOtp({ otp })).then((r) => {
+      switch (r.type) {
+        case OTP_SUCCESS:
+          setToastSeverity("success");
+          setToastMessage(r.payload.success);
+          setOpenToast(true);
+          navigate("/profile");
+          break;
+        case OTP_FAILURE:
+          setToastSeverity("error");
+          setToastMessage(r.payload.error);
+          setOpenToast(true);
+          break;
+        default:
+          setToastMessage("Unexpected error occurred");
+          setOpenToast(true);
+      }
+    });
+  };
 
-       return () => clearInterval(interval);
-     }, [timeleft]);
-    //  function getnumber(phone){
-    //    return phone?.split("+91")[1];
-    //  }
+  const handleResendotp = () => {
+    setTimeleft(60);
+  };
+
+  const formatTime = (timeLeft) => {
+    if (timeLeft <= 0) {
+      return "00:00";
+    }
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    return `${minutes < 10 ? "0" : ""}${minutes}:${
+      seconds < 10 ? "0" : ""
+    }${seconds}`;
+  };
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeleft((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [timeleft]);
+
   return (
     <Box
       sx={{
         backgroundColor: "lightblue",
-        // border: "1px solid red",
         margin: "auto",
-        left: { base: "0%", md: "0%", lg: "34.6%" },
+        left: { xs: "0%", lg: "34.6%" },
         height: "550px",
-        width: { base: "100%", md: "100%", lg: "30.8%" },
+        width: { xs: "100%", lg: "30.8%" },
         position: "absolute",
+        padding: { xs: "20px", lg: "0" },
       }}
     >
-      <Box sx={{ width: { base: "100%", lg: "100%" } }}>
-        <p
-          style={{
-            textAlign: "center",
-            padding: "2px",
-            marginLeft: "10px",
-            fontSize: "18px",
-            // color: "blue",
-          }}
-        >
-          OTP Verfication
-        </p>
-        <p
-          style={{
-            textAlign: "center",
-            padding: "2px",
-            marginLeft: "10px",
-            marginTop: "25px",
-            fontSize: "15px",
-          }}
-        >
+      <Box sx={{ width: "100%", textAlign: "center" }}>
+        <p style={{ fontSize: "18px" }}>OTP Verification</p>
+        <p style={{ fontSize: "15px", marginTop: "25px" }}>
           We have sent a 6 digit OTP to {phone?.split("+91")[1]}
         </p>
       </Box>
-      <ImageList
-        sx={{
-          marginLeft: "30%",
-          marginTop: "15px",
-          width: "300px",
-          height: "150px",
-        }}
-      >
+      <ImageList sx={{ margin: "auto", width: "80%", height: "150px" }}>
         {itemData.map((item) => (
           <ImageListItem key={item.img}>
             <img
@@ -312,10 +267,11 @@ const Otp = () => {
           flexDirection: "column",
           gap: 2,
           padding: "25px",
-          //   border: "1px solid red",
+          margin: "auto",
+          width: { xs: "90%", sm: "70%", md: "60%" },
         }}
       >
-        <span style={{ textAlign: "start" }}>Enter Otp</span>
+        <span style={{ textAlign: "start" }}>Enter OTP</span>
         <OTP
           separator={<span></span>}
           value={otp}
@@ -329,11 +285,11 @@ const Otp = () => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "row",
+          flexDirection: { xs: "column", md: "row" },
           justifyContent: "space-between",
           padding: "12px",
           marginTop: "-25px",
-          // border: "1px solid red",
+          textAlign: { xs: "center", md: "start" },
         }}
       >
         <p>Didn't receive OTP?</p>
@@ -341,12 +297,11 @@ const Otp = () => {
           sx={{
             display: "flex",
             flexDirection: "row",
-            justifyContent: "space-between",
-            // border: "1px solid red",
+            justifyContent: { xs: "center", md: "space-between" },
           }}
         >
           <Button onClick={handleResendotp} disabled={timeleft > 0}>
-            Resend Otp
+            Resend OTP
           </Button>
           <p>{formatTime(timeleft)}</p>
         </Box>
@@ -355,7 +310,7 @@ const Otp = () => {
         open={openToast}
         autoHideDuration={6000}
         onClose={handleToastClose}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }} // Adjust the vertical position
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <MuiAlert
           elevation={6}
@@ -368,9 +323,10 @@ const Otp = () => {
       </Snackbar>
     </Box>
   );
-}
+};
 
 export default Otp;
+
 const itemData = [
   {
     img: "https://img.freepik.com/premium-vector/otp-one-time-password-security-illustration_258153-467.jpg",
@@ -384,6 +340,7 @@ OTP.propTypes = {
   separator: PropTypes.node,
   value: PropTypes.string.isRequired,
 };
+
 const InputElement = styled("input")(
   ({ theme }) => `
   width: 40px;
@@ -418,6 +375,7 @@ const InputElement = styled("input")(
   }
 `
 );
+
 const blue = {
   100: "#DAECFF",
   200: "#80BFFF",

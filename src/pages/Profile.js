@@ -15,107 +15,120 @@ import {
 import { useDispatch } from "react-redux";
 import { addProfile } from "../Redux/Auth/action";
 import { PROFILE_FAILURE, PROFILE_SUCCESS } from "../Redux/Auth/actionTypes";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+
 const Profile = ({ setCurrentStep }) => {
-   const [firstName,setFirstName]=React.useState("");
-   const [lastName, setLastName] = React.useState("");
-   const [year, setYear] = React.useState("");
-   const [day, setDay] = React.useState("");
-   const [month, setMonth] = React.useState("");
-   const [gender, setGender] = React.useState("");
-   const [phone,setPhone]=React.useState("");
-   const [email, setEmail] = React.useState("");
-   const [address, setAddress] = React.useState("");
-   const [pincode, setPincode] = React.useState("");
-   const [selectedState, setSelectedState] = React.useState("");
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+  const [year, setYear] = React.useState("");
+  const [day, setDay] = React.useState("");
+  const [month, setMonth] = React.useState("");
+  const [gender, setGender] = React.useState("");
+  const [phone, setPhone] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [address, setAddress] = React.useState("");
+  const [pincode, setPincode] = React.useState("");
+  const [selectedState, setSelectedState] = React.useState("");
   const [selectedDistrict, setSelectedDistrict] = React.useState("");
-     const [emailError, setEmailError] = React.useState(false);
-     const [openToast, setOpenToast] = React.useState(false);
-     const [toastMessage, setToastMessage] = React.useState("");
-     const [toastSeverity, setToastSeverity] = React.useState("success");
-     const handleToastClose = (event, reason) => {
-       if (reason === "clickaway") {
-         return;
-       }
-       setOpenToast(false);
-     };
-    const pattern = new RegExp(/^\d{1,10}$/);
-    const pincodepattern = new RegExp(/^\d{1,6}$/);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-   const handleEmailChange = (e) => {
-     setEmail(e.target.value);
-     if (
-       !/^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$/.test(e.target.value)
-     ) {
-       setEmailError("Invalid email address");
-     } else {
-       setEmailError(false);
-     }
-   };
-   const handleForm = (e) => {
-      e.preventDefault();
-      const payload={
-        firstName,lastName,year,day,month,gender,phone,email,address,pincode,selectedState,selectedDistrict
+  const [emailError, setEmailError] = React.useState(false);
+  const [openToast, setOpenToast] = React.useState(false);
+  const [toastMessage, setToastMessage] = React.useState("");
+  const [toastSeverity, setToastSeverity] = React.useState("success");
+
+  const handleToastClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenToast(false);
+  };
+
+  const pattern = new RegExp(/^\d{1,10}$/);
+  const pincodepattern = new RegExp(/^\d{1,6}$/);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    if (!/^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$/.test(e.target.value)) {
+      setEmailError("Invalid email address");
+    } else {
+      setEmailError(false);
+    }
+  };
+
+  const handleForm = (e) => {
+    e.preventDefault();
+    const payload = {
+      firstName,
+      lastName,
+      year,
+      day,
+      month,
+      gender,
+      phone,
+      email,
+      address,
+      pincode,
+      selectedState,
+      selectedDistrict,
+    };
+    dispatch(addProfile(payload)).then((r) => {
+      if (r.type === PROFILE_FAILURE) {
+        setToastSeverity("error");
+        setToastMessage(r.payload.error);
+        setOpenToast(true);
+      } else if (r.type === PROFILE_SUCCESS) {
+        setToastSeverity("success");
+        setToastMessage(r.payload.success);
+        setOpenToast(true);
+        navigate("/userSuggestions");
       }
-      dispatch(addProfile(payload))
-      .then((r)=>{
-        if(r.type === PROFILE_FAILURE){
-           setToastSeverity("error");
-           setToastMessage(r.payload.error);
-           setOpenToast(true);
-        }
-        else if(r.type === PROFILE_SUCCESS){
-           setToastSeverity("success");
-           setToastMessage(r.payload.success);
-           setOpenToast(true);
-          navigate("/userSuggestions")
-        }
-      })
-   };
+    });
+  };
+
   React.useEffect(() => {
     setCurrentStep(1);
-  }, []);
+  }, [setCurrentStep]);
+
   return (
     <Box
       sx={{
         backgroundColor: "lightblue",
-        // border: "1px solid red",
         margin: "auto",
-        left: { base: "0%", md: "0%", lg: "34.6%" },
-        height: "550px",
-        position: "absolute",
+        left: { xs: "0%", md: "0%", lg: "0.8%" },
+        height: { xs: "auto", lg: "550px" },
+        position: "relative",
         overflow: "scroll",
         overflowX: "hidden",
-        width: { base: "100%", md: "100%", lg: "30.8%" },
+        width: {
+          xs: "98%",
+          md: "100%",
+          lg: "31%",
+        },
+        padding: "10px",
       }}
     >
-      {/* form  */}
       <Box
         component="form"
         sx={{
           textAlign: "start",
-          gap: "2",
+          gap: 2,
+          display: "flex",
+          flexDirection: "column",
         }}
         noValidate
         onSubmit={handleForm}
       >
-        {/* name */}
-        <Box
-          sx={{
-            // border: "1px solid green",
-            marginTop: "15px",
-            padding: "15px",
-          }}
-        >
+        <Box sx={{ marginTop: "15px", padding: "15px" }}>
           <p>Name</p>
           <Box
             sx={{
               display: "flex",
-              flexDirection: "row",
+              flexDirection: { xs: "column", sm: "row" },
               justifyContent: "space-between",
+              gap: 2,
             }}
           >
             <TextField
@@ -126,9 +139,9 @@ const Profile = ({ setCurrentStep }) => {
               inputProps={{
                 pattern: "[A-Za-z ]+",
               }}
+              sx={{ width: { xs: "100%", sm: "48%" } }}
             />
             <TextField
-              sx={{ marginLeft: "2px" }}
               required
               label="LastName"
               value={lastName}
@@ -136,11 +149,19 @@ const Profile = ({ setCurrentStep }) => {
               inputProps={{
                 pattern: "[A-Za-z ]+",
               }}
+              sx={{ width: { xs: "100%", sm: "48%" } }}
             />
           </Box>
           <p>Date of Birth</p>
-          <Box sx={{ minWidth: 180, marginBottom: "5px" }}>
-            <FormControl fullWidth>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              justifyContent: "space-between",
+              gap: 2,
+            }}
+          >
+            <FormControl fullWidth sx={{ marginBottom: { xs: 2, sm: 0 } }}>
               <InputLabel id="demo-simple-select-label">Year</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -156,53 +177,38 @@ const Profile = ({ setCurrentStep }) => {
                 ))}
               </Select>
             </FormControl>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              marginTop: "2px",
-              gap: "2px",
-              padding: "2px",
-              justifyContent: "space-between",
-            }}
-          >
-            <Box sx={{ minWidth: 180 }}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Day</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={day}
-                  label="Day"
-                  onChange={(e) => setDay(e.target.value)}
-                >
-                  {days.map((item) => (
-                    <MenuItem key={item.day} value={item.day}>
-                      {item.day}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Box>
-            <Box sx={{ minWidth: 180 }}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Month</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={month}
-                  label="Month"
-                  onChange={(e) => setMonth(e.target.value)}
-                >
-                  {months.map((item) => (
-                    <MenuItem key={item.month} value={item.month}>
-                      {item.month}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Box>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Day</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={day}
+                label="Day"
+                onChange={(e) => setDay(e.target.value)}
+              >
+                {days.map((item) => (
+                  <MenuItem key={item.day} value={item.day}>
+                    {item.day}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Month</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={month}
+                label="Month"
+                onChange={(e) => setMonth(e.target.value)}
+              >
+                {months.map((item) => (
+                  <MenuItem key={item.month} value={item.month}>
+                    {item.month}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Box>
           <p>Gender</p>
           <ToggleButtonGroup
@@ -212,68 +218,51 @@ const Profile = ({ setCurrentStep }) => {
             aria-label="text alignment"
             sx={{
               display: "flex",
-              flexDirection: "row",
               justifyContent: "space-between",
+              flexDirection: { xs: "column", sm: "row" },
+              gap: 2,
             }}
           >
             <ToggleButton
               value="male"
-              sx={{
-                width: "100px",
-                borderRadius: "5px",
-                border: "1px solid black",
-              }}
-              variant="outline"
+              sx={{ width: "100px" }}
+              variant="outlined"
               aria-label="left aligned"
             >
               Male
             </ToggleButton>
             <ToggleButton
               value="female"
-              sx={{
-                width: "100px",
-                borderRadius: "5px",
-                border: "1px solid black",
-              }}
+              sx={{ width: "100px" }}
               aria-label="centered"
             >
               Female
             </ToggleButton>
             <ToggleButton
               value="other"
-              sx={{
-                width: "100px",
-                borderRadius: "5px",
-                border: "1px solid black",
-              }}
+              sx={{ width: "100px" }}
               aria-label="right aligned"
             >
-              other
+              Other
             </ToggleButton>
           </ToggleButtonGroup>
         </Box>
-        {/* contact Details */}
-        <Box
-          sx={{
-            // border: "1px solid green",
-            marginTop: "2px",
-            padding: "10px",
-          }}
-        >
+        <Box sx={{ marginTop: "2px", padding: "10px" }}>
           <p>Phone</p>
           <InputLabel
             sx={{
               width: "100%",
               marginTop: "5px",
-              variant: "outline",
-              marginLeft: "20%",
+              marginLeft: "0",
             }}
           >
             <Input
               type="text"
               value={phone}
+              inputProps={{
+                maxLength: 10,
+              }}
               onChange={(e) => {
-                // console.log(pattern.test(e.target.value));
                 if (pattern.test(e.target.value)) {
                   setPhone(e.target.value);
                 }
@@ -282,11 +271,12 @@ const Profile = ({ setCurrentStep }) => {
               startAdornment={
                 <InputAdornment position="start">+91</InputAdornment>
               }
+              sx={{ width: "100%" }}
             />
           </InputLabel>
           <p>Email</p>
           <TextField
-            sx={{ width: "100%", marginTop: "5px", variant: "outline" }}
+            sx={{ width: "100%", marginTop: "5px" }}
             label="Email"
             value={email}
             onChange={handleEmailChange}
@@ -294,28 +284,21 @@ const Profile = ({ setCurrentStep }) => {
             helperText={emailError}
           />
         </Box>
-        {/* Address Details */}
-        <Box
-          sx={{
-            // border: "1px solid green",
-            marginTop: "5px",
-            padding: "5px",
-          }}
-        >
+        <Box sx={{ marginTop: "5px", padding: "5px" }}>
           <p>Address Details</p>
           <TextField
-            sx={{ width: "100%", marginTop: "2px", variant: "outline" }}
-            label="Building,apartment,street etc"
+            sx={{ width: "100%", marginBottom: 2 }}
+            label="Address"
             value={address}
-            required
             onChange={(e) => setAddress(e.target.value)}
           />
-          <p>Pincode</p>
           <TextField
-            sx={{ width: "100%", marginTop: "2px", variant: "outline" }}
-            label="eg.110065"
+            sx={{ width: "100%", marginBottom: 2 }}
+            label="Pincode"
             value={pincode}
-            required
+            inputProps={{
+              maxLength: 6,
+            }}
             onChange={(e) => {
               if (pincodepattern.test(e.target.value)) {
                 setPincode(e.target.value);
@@ -325,74 +308,84 @@ const Profile = ({ setCurrentStep }) => {
           <Box
             sx={{
               display: "flex",
-              flexDirection: "row",
-              marginTop: "2px",
-              gap: "2px",
-              padding: "2px",
+              flexDirection: { xs: "column", sm: "row" },
               justifyContent: "space-between",
+              gap: 2,
             }}
           >
-            <Box sx={{ minWidth: 180 }}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">State</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={selectedState}
-                  label="state"
-                  onChange={(e) => setSelectedState(e.target.value)}
-                >
-                  {states.map((item) => (
-                    <MenuItem key={item.state} value={item.state}>
-                      {item.state}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Box>
-            <Box sx={{ minWidth: 180, marginLeft: "-5px" }}>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">District</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={selectedDistrict}
-                  label="District"
-                  onChange={(e) => setSelectedDistrict(e.target.value)}
-                >
-                  {selectedState &&
-                    states
-                      .find((item) => item.state === selectedState)
-                      .districts.map((item, index) => (
-                        <MenuItem key={index} value={item}>
-                          {item}
-                        </MenuItem>
-                      ))}
-                </Select>
-              </FormControl>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                marginTop: "2px",
+                gap: "2px",
+                padding: "2px",
+                justifyContent: "space-between",
+              }}
+            >
+              <Box sx={{ minWidth: 180 }}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">State</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={selectedState}
+                    label="state"
+                    onChange={(e) => setSelectedState(e.target.value)}
+                  >
+                    {states.map((item) => (
+                      <MenuItem key={item.state} value={item.state}>
+                        {item.state}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Box>
+              <Box sx={{ minWidth: 180, marginLeft: "-5px" }}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">
+                    District
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={selectedDistrict}
+                    label="District"
+                    onChange={(e) => setSelectedDistrict(e.target.value)}
+                  >
+                    {selectedState &&
+                      states
+                        .find((item) => item.state === selectedState)
+                        .districts.map((item, index) => (
+                          <MenuItem key={index} value={item}>
+                            {item}
+                          </MenuItem>
+                        ))}
+                  </Select>
+                </FormControl>
+              </Box>
             </Box>
           </Box>
         </Box>
-        <Button
-          sx={{ width: "100%" }}
-          variant="contained"
-          color="primary"
-          type="submit"
-        >
-          Continue
-        </Button>
+        <Box sx={{ padding: "10px" }}>
+          <Button
+            type="submit"
+            sx={{ width: "100%", marginTop: "5px" }}
+            variant="contained"
+          >
+            Continue
+          </Button>
+        </Box>
       </Box>
       <Snackbar
         open={openToast}
         autoHideDuration={6000}
         onClose={handleToastClose}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }} // Adjust the vertical position
       >
         <MuiAlert
-          elevation={6}
-          variant="filled"
           onClose={handleToastClose}
           severity={toastSeverity}
+          sx={{ width: "100%" }}
         >
           {toastMessage}
         </MuiAlert>
@@ -401,8 +394,8 @@ const Profile = ({ setCurrentStep }) => {
   );
 };
 
-export default Profile;
-const days = Array.from({ length: 31 }, (v, i) => ({ day: i + 1 }));
+const years = Array.from({ length: 100 }, (_, i) => ({ year: i + 1923 }));
+const days = Array.from({ length: 31 }, (_, i) => ({ day: i + 1 }));
 const months = [
   { month: "January" },
   { month: "February" },
@@ -415,9 +408,8 @@ const months = [
   { month: "September" },
   { month: "October" },
   { month: "November" },
-  { month: "December" }
+  { month: "December" },
 ];
-const years = Array.from({ length: 2024 - 1947 + 1 }, (v, i) => ({ year: 1947 + i }));
 const states = [
   {
     state: "Andhra Pradesh",
@@ -538,3 +530,5 @@ const states = [
     districts: ["Kolkata", "Howrah", "Durgapur", "Asansol", "Siliguri"],
   },
 ];
+
+export default Profile;
