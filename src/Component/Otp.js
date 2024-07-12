@@ -135,7 +135,7 @@ function OTP({ separator, length, value, onChange }) {
   };
 
   return (
-    <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+    <Box sx={{ width: "100%", marignLeft:"20%",display: "flex", gap: 1, alignItems: "center" }}>
       {new Array(length).fill(null).map((_, index) => (
         <React.Fragment key={index}>
           <BaseInput
@@ -235,12 +235,12 @@ const Otp = () => {
     <Box
       sx={{
         backgroundColor: "lightblue",
-        margin: "auto",
-        left: { xs: "0%", lg: "34.6%" },
+        margin: { xs: "auto", sm: "auto", md: "auto", lg: "auto" },
+        left: { xs: "0%", md: "0%", lg: "0%" },
         height: "550px",
-        width: { xs: "100%", lg: "30.8%" },
-        position: "absolute",
-        padding: { xs: "20px", lg: "0" },
+        width: { xs: "100%", sm: "50%", md: "60%", lg: "30.8%" },
+        position: { xs: "relative", md: "relative", lg: "relative" },
+        padding: { xs: "10px", md: "20px", lg: "20px" },
       }}
     >
       <Box sx={{ width: "100%", textAlign: "center" }}>
@@ -249,7 +249,15 @@ const Otp = () => {
           We have sent a 6 digit OTP to {phone?.split("+91")[1]}
         </p>
       </Box>
-      <ImageList sx={{ margin: "auto", width: "80%", height: "150px" }}>
+      <ImageList
+        sx={{
+          margin: "auto",
+          marginTop: "15px",
+          marginLeft: { xs: "30%", md: "35%", lg: "30%" },
+          width: { xs: "150px", sm: "200px", md: "250px", lg: "300px" },
+          height: { xs: "150px", sm: "150px", md: "200px", lg: "150px" },
+        }}
+      >
         {itemData.map((item) => (
           <ImageListItem key={item.img}>
             <img
@@ -266,19 +274,24 @@ const Otp = () => {
           display: "flex",
           flexDirection: "column",
           gap: 2,
-          padding: "25px",
+          width: "100%",
           margin: "auto",
-          width: { xs: "90%", sm: "70%", md: "60%" },
+          padding: { xs: "5px", md: "40px", lg: "25px" },
         }}
       >
         <span style={{ textAlign: "start" }}>Enter OTP</span>
         <OTP
+          sx={{marginLeft:{md:"20%"}}}
           separator={<span></span>}
           value={otp}
           onChange={setOtp}
           length={6}
         />
-        <Button onClick={handleOtp} variant="contained">
+        <Button
+          sx={{ width: "80%", marginRight: "18%", alignSelf: "center" }}
+          onClick={handleOtp}
+          variant="contained"
+        >
           Verify and Continue
         </Button>
       </Box>
@@ -287,8 +300,7 @@ const Otp = () => {
           display: "flex",
           flexDirection: { xs: "column", md: "row" },
           justifyContent: "space-between",
-          padding: "12px",
-          marginTop: "-25px",
+          padding: "15px",
           textAlign: { xs: "center", md: "start" },
         }}
       >
@@ -375,7 +387,6 @@ const InputElement = styled("input")(
   }
 `
 );
-
 const blue = {
   100: "#DAECFF",
   200: "#80BFFF",
