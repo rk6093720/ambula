@@ -169,7 +169,7 @@ const Otp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [openToast, setOpenToast] = React.useState(false);
-  const [toastMessage, setToastMessage] = React.useState("");
+  const [toastMessage, setToastMessage] = React.useState("");;
   const [toastSeverity, setToastSeverity] = React.useState("success");
   const handleToastClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -189,21 +189,16 @@ const Otp = () => {
       return;
     }
     dispatch(getOtp({ otp })).then((r) => {
-      switch (r.type) {
-        case OTP_SUCCESS:
-          setToastSeverity("success");
-          setToastMessage(r.payload.success);
-          setOpenToast(true);
-          navigate("/profile");
-          break;
-        case OTP_FAILURE:
-          setToastSeverity("error");
-          setToastMessage(r.payload.error);
-          setOpenToast(true);
-          break;
-        default:
-          setToastMessage("Unexpected error occurred");
-          setOpenToast(true);
+      if(r.type === OTP_SUCCESS){
+        setToastSeverity("success");
+        setToastMessage("otp is matched");
+        setOpenToast(true);
+        navigate("/profile");
+      }
+      else if(r.type === OTP_FAILURE){
+        setToastSeverity("error");
+        setToastMessage("otp is not match");
+        setOpenToast(true);
       }
     });
   };
@@ -238,7 +233,7 @@ const Otp = () => {
         margin: { xs: "auto", sm: "auto", md: "auto", lg: "auto" },
         left: { xs: "0%", md: "0%", lg: "0%" },
         height: "550px",
-        width: { xs: "100%", sm: "50%", md: "60%", lg: "30.8%" },
+        width: { xs: "100%", sm: "50%", md: "50%", lg: "30.8%" },
         position: { xs: "relative", md: "relative", lg: "relative" },
         padding: { xs: "10px", md: "20px", lg: "20px" },
       }}
@@ -330,7 +325,7 @@ const Otp = () => {
           onClose={handleToastClose}
           severity={toastSeverity}
         >
-          {toastMessage}
+          {toastMessage }
         </MuiAlert>
       </Snackbar>
     </Box>

@@ -104,13 +104,13 @@ const Login = ({ setCurrentStep }) => {
     .then((r)=>{
       if(r.type === PHONE_NUMBER_SUCCESS){
          setToastSeverity("success");
-         setToastMessage(r.payload.success);
+         setToastMessage("Phone number is success");
          setOpenToast(true);
          navigate("/otp");
       }
        else if(r.type === PHONE_NUMBER_FAILURE){
         setToastSeverity("error");
-        setToastMessage(r.payload.error);
+        setToastMessage("phone number is not match");
         setOpenToast(true);
       }
     })
@@ -124,13 +124,19 @@ const Login = ({ setCurrentStep }) => {
           backgroundColor: "lightblue",
           // border: "1px solid red",
           margin: "auto",
-          left: { base: "0%", md: "0%", lg: "34.6%" },
+          marginLeft: { xs: "0%",sm:"0%", md: "14.5%", lg: "34.6%" },
           height: "480px",
           position: "absolute",
-          width: { base: "100%", md: "100%", lg: "30.8%" },
+          // border: {
+          //   xs: "1px solid red",
+          //   sm: "1px solid red",
+          //   md: "1px solid red",
+          //   lg: "1px solid red",
+          // },
+          width: { xs: "102.5%", sm: "101%", md: "71%", lg: "30.8%" },
         }}
       >
-        <Box width={{ base: "100%", lg: "100%" }}>
+        <Box width={{ xs: "100%", sm: "100%", md: "100%", lg: "100%" }}>
           <h1
             style={{
               textAlign: "start",

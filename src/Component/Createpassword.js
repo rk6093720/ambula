@@ -78,14 +78,15 @@ const Createpassword = () => {
       sx={{
         backgroundColor: "lightblue",
         margin: "auto",
-        left: { xs: "0%", lg: "34.6%" },
+        marginLeft: { xs: "0%",md:"14.5%", lg: "34.6%" },
         height: "100vh",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
         overflowY: "auto",
-        width: { xs: "100%", lg: "30.8%" },
+        overflowX:"hidden",
+        width: { xs: "100%",sm:"100%",md:"71%", lg: "30.8%" },
       }}
     >
       <Box sx={{ width: "100%", textAlign: "center", padding: 2 }}>
@@ -96,7 +97,7 @@ const Createpassword = () => {
           You have successfully created your ABHA number
         </Typography>
       </Box>
-      <Box sx={{ width: "100%", padding: 2 }}>
+      <Box sx={{ width: { xs: "100%",sm:"100%",md:"100%", lg: "100%" }, padding: 2 }}>
         <Typography variant="h6" sx={{ textAlign: "start", fontSize: "18px" }}>
           Create Password
         </Typography>

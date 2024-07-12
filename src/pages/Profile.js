@@ -97,15 +97,20 @@ const Profile = ({ setCurrentStep }) => {
       sx={{
         backgroundColor: "lightblue",
         margin: "auto",
-        left: { xs: "0%", md: "0%", lg: "0.8%" },
-        height: { xs: "auto", lg: "550px" },
+        // border: {
+        //   xs: "1px solid red",
+        //   sm: "1px solid red",
+        //   md: "1px solid red",
+        //   lg: "1px solid red",
+        // },
+        marginLeft: { xs: "0%", md: "14.4%", lg: "34.6%" },
+        height: { xs: "auto", lg: "auto" },
         position: "relative",
-        overflow: "scroll",
-        overflowX: "hidden",
         width: {
           xs: "98%",
-          md: "100%",
-          lg: "31%",
+          sm: "100%",
+          md: "69.1%",
+          lg: "29.3%",
         },
         padding: "10px",
       }}
@@ -219,35 +224,51 @@ const Profile = ({ setCurrentStep }) => {
             sx={{
               display: "flex",
               justifyContent: "space-between",
-              flexDirection: { xs: "column", sm: "row" },
+              flexDirection: { xs: "row", sm: "row", md: "row" },
               gap: 2,
             }}
           >
             <ToggleButton
               value="male"
-              sx={{ width: "100px" }}
-              variant="outlined"
-              aria-label="left aligned"
+              sx={{
+                width: "100px",
+                "&:hover": {
+                  border: "2px solid blue",
+                },
+              }}
+              aria-label="male"
             >
               Male
             </ToggleButton>
             <ToggleButton
               value="female"
-              sx={{ width: "100px" }}
-              aria-label="centered"
+              sx={{
+                width: "100px",
+                "&:hover": {
+                  border: "2px solid blue",
+                },
+              }}
+              aria-label="female"
+              variant="outlined"
             >
               Female
             </ToggleButton>
             <ToggleButton
               value="other"
-              sx={{ width: "100px" }}
-              aria-label="right aligned"
+              color="primary"
+              sx={{
+                width: "100px",
+                "&:hover": {
+                  border: "2px solid blue",
+                },
+              }}
+              aria-label="other"
             >
               Other
             </ToggleButton>
           </ToggleButtonGroup>
         </Box>
-        <Box sx={{ marginTop: "2px", padding: "10px" }}>
+        <Box sx={{ marginTop: "-25px", padding: "10px" }}>
           <p>Phone</p>
           <InputLabel
             sx={{
@@ -284,7 +305,7 @@ const Profile = ({ setCurrentStep }) => {
             helperText={emailError}
           />
         </Box>
-        <Box sx={{ marginTop: "5px", padding: "5px" }}>
+        <Box sx={{ marginTop: "-25px", padding: "5px" }}>
           <p>Address Details</p>
           <TextField
             sx={{ width: "100%", marginBottom: 2 }}
@@ -305,65 +326,65 @@ const Profile = ({ setCurrentStep }) => {
               }
             }}
           />
+
           <Box
             sx={{
               display: "flex",
-              flexDirection: { xs: "column", sm: "row" },
+              flexDirection: { xs: "column", sm: "row", md: "row", lg: "row" },
+              marginTop: "2px",
+              gap: "2px",
+              padding: "2px",
               justifyContent: "space-between",
-              gap: 2,
             }}
           >
             <Box
               sx={{
-                display: "flex",
-                flexDirection: "row",
+                minWidth: { xs: 180, sm: 350, md: 330, lg: 150 },
                 marginTop: "2px",
-                gap: "2px",
-                padding: "2px",
-                justifyContent: "space-between",
               }}
             >
-              <Box sx={{ minWidth: 180 }}>
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">State</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={selectedState}
-                    label="state"
-                    onChange={(e) => setSelectedState(e.target.value)}
-                  >
-                    {states.map((item) => (
-                      <MenuItem key={item.state} value={item.state}>
-                        {item.state}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Box>
-              <Box sx={{ minWidth: 180, marginLeft: "-5px" }}>
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">
-                    District
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={selectedDistrict}
-                    label="District"
-                    onChange={(e) => setSelectedDistrict(e.target.value)}
-                  >
-                    {selectedState &&
-                      states
-                        .find((item) => item.state === selectedState)
-                        .districts.map((item, index) => (
-                          <MenuItem key={index} value={item}>
-                            {item}
-                          </MenuItem>
-                        ))}
-                  </Select>
-                </FormControl>
-              </Box>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">State</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={selectedState}
+                  label="state"
+                  onChange={(e) => setSelectedState(e.target.value)}
+                >
+                  {states.map((item) => (
+                    <MenuItem key={item.state} value={item.state}>
+                      {item.state}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+            <Box
+              sx={{
+                minWidth: { xs: 180, sm: 350, md: 330, lg: 150 },
+                marginTop: "2px",
+              }}
+            >
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">District</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={selectedDistrict}
+                  label="District"
+                  onChange={(e) => setSelectedDistrict(e.target.value)}
+                >
+                  {selectedState &&
+                    states
+                      .find((item) => item.state === selectedState)
+                      .districts.map((item, index) => (
+                        <MenuItem key={index} value={item}>
+                          {item}
+                        </MenuItem>
+                      ))}
+                </Select>
+              </FormControl>
             </Box>
           </Box>
         </Box>

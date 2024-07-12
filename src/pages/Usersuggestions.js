@@ -49,12 +49,10 @@ console.log(suggestlist);
       sx={{
         backgroundColor: "lightblue",
         margin: "auto",
-        left: { xs: "0%", lg: "34.6%" },
-        height: "480px",
+        marginLeft: { xs: "0%",md:"14.5%", lg: "34.7%" },
+        height: "750px",
         position: "absolute",
-        overflow: "scroll",
-        overflowX: "hidden",
-        width: { xs: "100%", lg: "30.8%" },
+        width: { xs: "100%",sm:"100%",md:"71%", lg: "30.7%" },
       }}
     >
       <Box sx={{ width: "100%", textAlign: "center", marginTop: "45px" }}>
